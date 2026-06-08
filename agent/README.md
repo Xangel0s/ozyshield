@@ -1,0 +1,2 @@
+"# OzyShield Agent\n\nThe **OzyShield Agent** is a ultra-lightweight, high-performance monitoring daemon written in Go. It runs locally on your servers (VMs) to perform real-time error log analysis with **Zero-Knowledge Sanitization** before sending teleme
+<truncated 1728 bytes>

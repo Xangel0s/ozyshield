@@ -1,0 +1,2 @@
+"package discovery\n\nimport (\n\t\"context\"\n\t\"os\"\n\t\"os/exec\"\n\t\"runtime\"\n\t\"strings\"\n\t\"time\"\n)\n\n// SystemMap represents the structural architecture scan of the client VM.\ntype SystemMap struct {\n\tHostname   string            `json
+<truncated 2830 bytes>

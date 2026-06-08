@@ -1,0 +1,2 @@
+"package filter\n\nimport (\n\t\"regexp\"\n)\n\nvar (\n\t// Email regex\n\temailRegex = regexp.MustCompile(`[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}`)\n\n\t// Credit Card regex (13 to 16 digits, optionally separated by spaces or dashes)\n\tcreditCar
+<truncated 1599 bytes>

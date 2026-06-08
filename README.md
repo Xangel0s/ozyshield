@@ -1,0 +1,2 @@
+"# OzyShield | Monitoreo Inteligente de Infraestructura con IA\n\n**OzyShield** es un sistema de monitoreo autónomo de infraestructura y seguridad de tipo SaaS B2B, diseñado para equipos de desarrollo e infraestructura modernos.\n\nEste repositorio organ
+<truncated 2838 bytes>

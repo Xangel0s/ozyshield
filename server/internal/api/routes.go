@@ -1,0 +1,2 @@
+"package api\n\nimport (\n\t\"net/http\"\n)\n\n// RegisterRoutes binds our endpoints to the Go 1.22+ standard multiplexer.\nfunc RegisterRoutes(mux *http.ServeMux, api *ServerAPI) {\n\t// 1. Agent-facing endpoints\n\tmux.HandleFunc(\"GET /v1/install.sh\", 
+<truncated 606 bytes>

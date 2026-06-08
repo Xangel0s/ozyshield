@@ -1,0 +1,2 @@
+"package config\n\nimport (\n\t\"flag\"\n\t\"os\"\n\t\"strings\"\n)\n\n// Config holds the configuration settings for the agent.\ntype Config struct {\n\tClientToken  string   // Token identifying the client/company\n\tNodeID       string   // Unique ID of
+<truncated 1865 bytes>

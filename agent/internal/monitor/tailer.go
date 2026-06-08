@@ -1,0 +1,2 @@
+"package monitor\n\nimport (\n\t\"context\"\n\t\"io\"\n\t\"log\"\n\t\"os\"\n\t\"time\"\n)\n\n// LogLine represents a read log line with its source path.\ntype LogLine struct {\n\tPath      string\n\tContent   string\n\tTimestamp time.Time\n}\n\n// TailFile
+<truncated 2870 bytes>

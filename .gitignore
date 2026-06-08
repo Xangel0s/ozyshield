@@ -1,0 +1,2 @@
+"# Dependencies\nnode_modules/\n.pnpm-store/\n\n# Next.js Build Output\n.next/\nlanding-next/out/\nlanding-next/.next/\n\n# Go compiled binaries\nozyagent\n*.exe\n*.exe~\n*.dll\n*.so\n*.dylib\nserver/server\nagent/ozyagent\n\n# Environment variables\n.env\
+<truncated 183 bytes>

@@ -1,0 +1,2 @@
+"version: '3.8'\n\nservices:\n  # OzyShield Central REST API Server\n  ozyshield-server:\n    build:\n      context: ./server\n      dockerfile: Dockerfile\n    container_name: ozyshield-server\n    ports:\n      - \"8080:8080\"\n    environment:\n      - 
+<truncated 909 bytes>

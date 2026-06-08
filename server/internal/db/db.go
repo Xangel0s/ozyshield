@@ -1,0 +1,2 @@
+"package db\n\nimport (\n\t\"errors\"\n\t\"sync\"\n\t\"time\"\n)\n\n// Node represents a monitored system instance.\ntype Node struct {\n\tNodeID      string            `json:\"node_id\"`\n\tName        string            `json:\"name\"`\n\tOS          stri
+<truncated 2480 bytes>

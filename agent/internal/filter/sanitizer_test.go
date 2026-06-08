@@ -1,0 +1,2 @@
+"package filter\n\nimport (\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestSanitize(t *testing.T) {\n\ttests := []struct {\n\t\tname     string\n\t\tinput    string\n\t\texpected string\n\t}{\n\t\t{\n\t\t\tname:     \"Redact Email\",\n\t\t\tinput:    \"[ERRO
+<truncated 2724 bytes>

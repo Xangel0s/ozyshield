@@ -1,0 +1,2 @@
+"# OzyShield: Core Business Logic & Architecture\n\n## 1. The Value Proposition (El Problema y la Solución)\n\nLas infraestructuras empresariales modernas (sistemas de pagos, bases de datos masivas, microservicios) generan millones de líneas de logs diar
+<truncated 4720 bytes>

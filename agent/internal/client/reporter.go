@@ -1,0 +1,2 @@
+"package client\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"net/http\"\n\t\"time\"\n)\n\n// TelemetryPayload represents the JSON body sent to the central OzyShield API.\ntype TelemetryPayload struct {\n\tClientToken string 
+<truncated 3174 bytes>

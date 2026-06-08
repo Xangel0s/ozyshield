@@ -1,0 +1,2 @@
+"package filter\n\nimport (\n\t\"sync\"\n\t\"time\"\n)\n\n// RateLimiter protects against log flooding and duplicate errors.\ntype RateLimiter struct {\n\tmu           sync.Mutex\n\ttokens       float64\n\tcapacity     float64\n\trefillRate   float64      
+<truncated 3076 bytes>

@@ -1,0 +1,2 @@
+"package engine\n\nimport (\n\t\"strings\"\n)\n\n// AnalyzeLog acts as our LLM processor. In development/MVP mode, it uses expert\n// heuristic rule matching to produce highly accurate structural diagnostics.\n// In a production build, this is where the Op
+<truncated 4051 bytes>
