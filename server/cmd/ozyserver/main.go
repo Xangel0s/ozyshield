@@ -13,13 +13,13 @@ import (
 )
 
 func main() {
-	log.Println("🛡️  Starting OzyShield Central Server...")
+	log.Println("Starting OzyShield Central Server...")
 
 	cfg := config.Load()
 
 	if errs := cfg.Validate(); len(errs) > 0 {
 		for _, e := range errs {
-			log.Printf("  ❌ %s", e)
+			log.Printf("  [ERROR] %s", e)
 		}
 		log.Fatal("Fix the above configuration errors and restart.")
 	}
@@ -50,7 +50,7 @@ func main() {
 	api.RegisterRoutes(mux, serverAPI)
 
 	serverAddr := ":" + port
-	log.Printf("🚀 OzyShield Server listening on http://localhost%s", serverAddr)
+	log.Printf("OzyShield Server listening on http://localhost%s", serverAddr)
 	log.Printf("   Admin: %s", cfg.AdminEmail)
 	log.Printf("   Token: %s", cfg.AuthToken)
 	log.Printf("   Registration: %v", cfg.EnableRegister)
