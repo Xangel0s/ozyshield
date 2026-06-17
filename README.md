@@ -12,8 +12,8 @@ El proyecto se divide de la siguiente manera:
 
 *   **`/agent`**: Agente ligero escrito en Go. Se instala en los servidores de los clientes para monitorear logs, realizar auto-descubrimiento y sanitizar la telemetría antes de enviarla.
 *   **`/server`**: API REST en Go 1.22+. Ingiere telemetría, realiza el almacenamiento en caché criptográfico (SHA-256) de diagnósticos, genera reportes de incidentes y coordina el flujo.
-*   **`/landing`**: Landing page corporativa construida en **Next.js** (exportada de forma estática para distribución óptima).
-*   **`/system`**: Panel de control del cliente (Dashboard) construido en **React** (Vite + Tailwind CSS). Permite ver servidores activos, alertas e interactuar con simuladores de caídas.
+*   **`/system`**: Panel de control del cliente (Dashboard) construido en **React** (Vite + Tailwind CSS). Tema "Obsidian Stealth" con modo oscuro. Permite ver servidores activos, alertas, gestionar nodos e interactuar con simuladores de caídas.
+*   **`/stichi-inspiracion`**: Archivos de referencia de diseño e inspiración visual del dashboard.
 
 ---
 
@@ -32,17 +32,27 @@ El servidor API se levantará en `http://localhost:8080`.
 
 *(Opcional: Si deseas que el motor realice diagnósticos reales mediante IA, exporta tu llave antes de iniciar: `export OPENAI_API_KEY="tu-api-key"`).*
 
-### Paso 2: Levantar la Interfaz Web (Landing & Dashboard)
+### Paso 2: Levantar el Dashboard Web
 
-Puedes servir la Landing Page y el Dashboard usando un servidor de archivos estáticos:
+El dashboard está en `/system` y usa React + Vite + Tailwind CSS:
 
 ```bash
-# En la raíz del repositorio
-npx http-server -p 8000
+cd system
+npm install
+npm run dev
 ```
 
-*   **Landing Page**: `http://localhost:8000/landing/index.html`
-*   **Dashboard**: `http://localhost:8000/system/index.html`
+*   **Dashboard**: `http://localhost:5173`
+
+También puedes servir una versión estática con un servidor de archivos:
+
+```bash
+cd system
+npm run build
+npx http-server dist -p 8000
+```
+
+*   **Dashboard (estático)**: `http://localhost:8000/index.html`
 
 ### Paso 3: Instalar y Ejecutar el Agente en un Cliente
 

@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ozyshield/ozyshield-server/internal/config"
 	"github.com/ozyshield/ozyshield-server/internal/db"
 	"github.com/ozyshield/ozyshield-server/internal/engine"
 )
@@ -17,13 +18,19 @@ import (
 type ServerAPI struct {
 	Store db.Store
 	Cache *engine.DiagnosticsCache
+	teams *TeamStore
+	users *UserStore
+	Cfg   *config.Config
 }
 
 // NewServerAPI initializes a ServerAPI instance.
-func NewServerAPI(store db.Store, cache *engine.DiagnosticsCache) *ServerAPI {
+func NewServerAPI(store db.Store, cache *engine.DiagnosticsCache, cfg *config.Config) *ServerAPI {
 	return &ServerAPI{
 		Store: store,
 		Cache: cache,
+		teams: NewTeamStore(),
+		users: NewUserStore(cfg),
+		Cfg:   cfg,
 	}
 }
 
@@ -214,6 +221,78 @@ func (api *ServerAPI) SimulateCrash(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(savedIncident)
+}
+
+// UpdateIncidentStatus allows changing an incident's status (acknowledged, resolved, annulled).
+func (api *ServerAPI) UpdateIncidentStatus(w http.ResponseWriter, r *http.Request) {
+	type StatusPayload struct {
+		Status string `json:"status"`
+	}
+
+	var payload StatusPayload
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		http.Error(w, "Invalid JSON payload: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if payload.Status != "acknowledged" && payload.Status != "resolved" && payload.Status != "critical" && payload.Status != "annulled" {
+		http.Error(w, "Invalid status. Must be: critical, acknowledged, resolved, or annulled", http.StatusBadRequest)
+		return
+	}
+
+	incidentID := r.PathValue("id")
+	if incidentID == "" {
+		http.Error(w, "Missing incident ID", http.StatusBadRequest)
+		return
+	}
+
+	updated, err := api.Store.UpdateIncident(incidentID, payload.Status)
+	if err != nil {
+		http.Error(w, "Incident not found: "+err.Error(), http.StatusNotFound)
+		return
+	}
+
+	log.Printf("[Server] Incident %s status updated to '%s'", incidentID, payload.Status)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(updated)
+}
+
+// AssignIncidentToTeam assigns an incident to a specific team.
+func (api *ServerAPI) AssignIncidentToTeam(w http.ResponseWriter, r *http.Request) {
+	type TeamPayload struct {
+		Team string `json:"team"`
+	}
+
+	var payload TeamPayload
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		http.Error(w, "Invalid JSON payload: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if payload.Team == "" {
+		http.Error(w, "Missing team name", http.StatusBadRequest)
+		return
+	}
+
+	incidentID := r.PathValue("id")
+	if incidentID == "" {
+		http.Error(w, "Missing incident ID", http.StatusBadRequest)
+		return
+	}
+
+	updated, err := api.Store.UpdateIncidentTeam(incidentID, payload.Team)
+	if err != nil {
+		http.Error(w, "Incident not found: "+err.Error(), http.StatusNotFound)
+		return
+	}
+
+	log.Printf("[Server] Incident %s assigned to team '%s'", incidentID, payload.Team)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(updated)
 }
 
 func min(a, b int) int {

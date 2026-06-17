@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OzyShield | Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #e1e3e4;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0c0f10;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 2px;
+        }
+        .glass-card {
+            background: #1A1A1A;
+            border: 1px solid #262626;
+        }
+        .pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#1d4ed8",
+                      "on-error": "#690005",
+                      "on-tertiary": "#5c1900",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "on-tertiary-fixed-variant": "#832700",
+                      "on-secondary-fixed": "#1c1b1b",
+                      "background": "#111415",
+                      "surface-bright": "#373a3b",
+                      "secondary-fixed": "#e5e2e1",
+                      "outline": "#8e90a0",
+                      "inverse-on-surface": "#2e3132",
+                      "secondary-container": "#474746",
+                      "primary-fixed": "#dce1ff",
+                      "inverse-primary": "#2151da",
+                      "surface-container-low": "#191c1d",
+                      "error": "#ffb4ab",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-container": "#b7b5b4",
+                      "on-primary": "#002682",
+                      "surface": "#111415",
+                      "on-tertiary-fixed": "#390c00",
+                      "on-surface-variant": "#c4c5d7",
+                      "secondary": "#c8c6c5",
+                      "error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#474746",
+                      "on-tertiary-container": "#ffc9b7",
+                      "on-primary-fixed": "#001551",
+                      "on-primary-container": "#cad3ff",
+                      "tertiary-container": "#a73400",
+                      "primary": "#b7c4ff",
+                      "tertiary": "#ffb59c",
+                      "surface-dim": "#111415",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "outline-variant": "#434655",
+                      "inverse-surface": "#e1e3e4",
+                      "surface-container-lowest": "#0c0f10",
+                      "surface-container": "#1d2021",
+                      "tertiary-fixed-dim": "#ffb59c",
+                      "on-background": "#e1e3e4",
+                      "surface-container-high": "#282a2b",
+                      "on-primary-fixed-variant": "#0039b5",
+                      "surface-variant": "#323536",
+                      "surface-container-highest": "#323536",
+                      "on-secondary": "#313030",
+                      "tertiary-fixed": "#ffdbcf",
+                      "on-surface": "#e1e3e4",
+                      "surface-tint": "#b7c4ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "gutter": "16px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "headline-sm": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface custom-scrollbar selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar Component -->
+<nav class="bg-background dark:bg-background border-b border-surface-variant flex items-center justify-between px-margin-desktop w-full h-16 max-w-container-max mx-auto fixed top-0 z-50">
+<div class="flex items-center gap-8">
+<span class="font-headline-sm text-headline-sm font-bold text-on-background tracking-tighter">OzyShield</span>
+<div class="hidden md:flex gap-6 h-16 items-center">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-4 mt-4 h-full flex items-center" href="#">Dashboard</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Nodes</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Logs</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Settings</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-body-md text-body-md bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-lg transition-all border border-outline-variant">
+                Search...
+            </button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQdw6343J1eU3MPrUC6-YXwheQjiNIY7Pa1k9swXdfoB42bzBDea7AwMZnANKvGURqvhhRL7_N-8KBA0VMbDZf7nlFkHCT6SqUJ0pYMvggAr9mJQki6STJ_qttmMW4glpMzJW_LN53Z28-iZAC62as0c9_hPnBCcWVqhbzGKMA59uQPav5EZ6xk_p6pdh18vi5mvqy_NyspZYyieEb5ILlwa0FJE7cPKNL-7QIjCJNSNigBIW2bSdbbLomTdQ_wlCeLZcM0lU6ds9l"/>
+</div>
+</div>
+</nav>
+<!-- Main Wrapper -->
+<main class="pt-24 pb-12 px-margin-desktop max-w-container-max mx-auto">
+<!-- Header -->
+<header class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-1">Dashboard</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Fleet monitoring and active mitigation system.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-[#1A1A1A] border border-[#262626] text-on-surface px-5 py-2.5 rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">dns</span>
+                    Deploy Node
+                </button>
+<button class="bg-primary-container text-on-primary-container px-5 py-2.5 rounded-lg font-label-md text-label-md hover:brightness-110 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+                    Simulate Incident
+                </button>
+</div>
+</header>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+<div class="glass-card p-6 rounded-lg">
+<p class="font-label-md text-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Total Nodes</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">1,284</h3>
+<span class="text-primary text-[12px] font-bold">+12%</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4"></div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-lg">
+<p class="font-label-md text-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Active Incidents</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-md text-headline-md text-error">03</h3>
+<span class="pulse-red inline-block w-2 h-2 rounded-full bg-error"></span>
+</div>
+<p class="text-[11px] text-error mt-4 font-medium italic">High Priority: 1</p>
+</div>
+<div class="glass-card p-6 rounded-lg">
+<p class="font-label-md text-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Resolved Today</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">142</h3>
+<span class="text-tertiary text-[12px] font-bold">↑ 24</span>
+</div>
+<div class="mt-4 flex gap-1">
+<div class="h-2 w-full bg-tertiary/20 rounded"></div>
+<div class="h-2 w-full bg-tertiary/40 rounded"></div>
+<div class="h-2 w-full bg-tertiary/60 rounded"></div>
+<div class="h-2 w-3/4 bg-tertiary rounded"></div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-lg">
+<p class="font-label-md text-label-md text-on-surface-variant mb-2 uppercase tracking-wider">System Health</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">99.98%</h3>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+<span class="text-[11px] text-on-surface-variant">Global systems operational</span>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Left 2/3: Compute Fleet Live Feed -->
+<div class="lg:col-span-2 flex flex-col gap-gutter">
+<section class="glass-card rounded-lg overflow-hidden flex flex-col">
+<div class="px-6 py-4 border-b border-[#262626] flex justify-between items-center bg-[#121212]">
+<h2 class="font-label-md text-label-md uppercase tracking-widest text-on-surface">Compute Fleet Live Feed</h2>
+<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded font-bold uppercase">Live</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md border-collapse">
+<thead>
+<tr class="text-on-surface-variant border-b border-[#1A1A1A] bg-[#121212]/50">
+<th class="px-6 py-3 font-label-md text-[11px] uppercase tracking-wider">Node ID</th>
+<th class="px-6 py-3 font-label-md text-[11px] uppercase tracking-wider">Status</th>
+<th class="px-6 py-3 font-label-md text-[11px] uppercase tracking-wider">CPU Load %</th>
+<th class="px-6 py-3 font-label-md text-[11px] uppercase tracking-wider">Latency</th>
+<th class="px-6 py-3 font-label-md text-[11px] uppercase tracking-wider">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#1A1A1A]">
+<tr class="hover:bg-[#121212] transition-colors cursor-pointer group">
+<td class="px-6 py-4 font-mono text-[13px] text-on-surface">NODE-0X2F4A</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-primary/10 text-primary text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Operational
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="w-12 text-right">42%</span>
+<div class="w-20 h-1.5 bg-surface-variant rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 42%;"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">14ms</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-[#121212] transition-colors cursor-pointer group">
+<td class="px-6 py-4 font-mono text-[13px] text-on-surface">NODE-0X91BC</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-tertiary/10 text-tertiary text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                                            High Load
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="w-12 text-right">88%</span>
+<div class="w-20 h-1.5 bg-surface-variant rounded-full">
+<div class="h-full bg-tertiary rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">42ms</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-[#121212] transition-colors cursor-pointer group">
+<td class="px-6 py-4 font-mono text-[13px] text-on-surface">NODE-0XA45D</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-primary/10 text-primary text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Operational
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="w-12 text-right">12%</span>
+<div class="w-20 h-1.5 bg-surface-variant rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 12%;"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">8ms</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-[#121212] transition-colors cursor-pointer group">
+<td class="px-6 py-4 font-mono text-[13px] text-on-surface">NODE-0X212E</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-primary/10 text-primary text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Operational
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="w-12 text-right">34%</span>
+<div class="w-20 h-1.5 bg-surface-variant rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 34%;"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">12ms</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Traffic Saturation Area -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass-card rounded-lg p-5">
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant mb-4">Ingress Saturation</h3>
+<div class="flex items-end gap-2 h-32">
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[40%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[65%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[55%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[90%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[30%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[75%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[50%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[85%]"></div>
+</div>
+</div>
+<div class="glass-card rounded-lg p-5 relative overflow-hidden flex flex-col justify-center">
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant mb-2">Network Latency (Global)</h3>
+<div class="flex items-center gap-4">
+<div class="text-4xl font-bold text-on-surface">24<span class="text-lg font-normal text-on-surface-variant">ms</span></div>
+<div class="text-primary flex items-center">
+<span class="material-symbols-outlined">trending_down</span>
+<span class="text-[12px] font-bold">-2ms</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2">Optimized routing active via OzyShield Edge.</p>
+<div class="absolute bottom-0 right-0 p-2">
+<span class="material-symbols-outlined text-primary/10 text-6xl">network_ping</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Content Area -->
+<div class="lg:col-span-1 flex flex-col gap-gutter">
+<!-- Traffic Anomaly Map -->
+<div class="glass-card rounded-lg p-5">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-on-surface">Traffic Anomaly Map</h3>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">public</span>
+</div>
+<div class="relative w-full aspect-video bg-[#0c0f10] rounded-lg overflow-hidden border border-[#262626]">
+<!-- Abstract Dot Grid Visualization -->
+<div class="absolute inset-0 grid grid-cols-12 grid-rows-8 gap-1 p-2">
+<!-- Loop simulation of dots -->
+<script>
+                                for(let i=0; i<96; i++) {
+                                    const opacity = Math.random() * 0.3 + 0.1;
+                                    const isAnomaly = Math.random() > 0.95;
+                                    document.write(`<div class="rounded-full ${isAnomaly ? 'bg-error pulse-red' : 'bg-primary'} " style="opacity: ${isAnomaly ? 1 : opacity}"></div>`);
+                                }
+                            </script>
+</div>
+<div class="absolute bottom-2 left-2 bg-[#1A1A1A]/80 backdrop-blur px-2 py-1 rounded text-[10px] border border-[#262626] text-on-surface-variant">
+                            Detecting 1 anomaly in US-EAST
+                        </div>
+</div>
+</div>
+<!-- Security Pulse Timeline -->
+<div class="glass-card rounded-lg flex flex-col h-full min-h-[400px]">
+<div class="px-6 py-4 border-b border-[#262626] bg-[#121212]">
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-on-surface">Security Pulse</h3>
+</div>
+<div class="p-6 flex-1 overflow-y-auto custom-scrollbar">
+<div class="relative space-y-8 before:absolute before:inset-0 before:ml-2.5 before:h-full before:w-0.5 before:bg-[#262626]">
+<!-- Timeline Item 1 -->
+<div class="relative pl-10">
+<div class="absolute left-0 mt-1 h-5 w-5 rounded-full bg-[#1A1A1A] border-2 border-error flex items-center justify-center">
+<div class="h-1.5 w-1.5 rounded-full bg-error"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant mb-1">08:42:15 UTC</span>
+<p class="font-label-md text-label-md text-on-surface">Brute force attempt blocked</p>
+<p class="text-[12px] text-on-surface-variant mt-1">IP: 192.168.4.155 targeting SSH node-0x2f</p>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative pl-10">
+<div class="absolute left-0 mt-1 h-5 w-5 rounded-full bg-[#1A1A1A] border-2 border-primary flex items-center justify-center">
+<div class="h-1.5 w-1.5 rounded-full bg-primary"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant mb-1">08:35:42 UTC</span>
+<p class="font-label-md text-label-md text-on-surface">New firewall rule injected</p>
+<p class="text-[12px] text-on-surface-variant mt-1">Global propagation complete (1.2k nodes)</p>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative pl-10">
+<div class="absolute left-0 mt-1 h-5 w-5 rounded-full bg-[#1A1A1A] border-2 border-on-surface-variant flex items-center justify-center">
+<div class="h-1.5 w-1.5 rounded-full bg-on-surface-variant"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant mb-1">08:12:10 UTC</span>
+<p class="font-label-md text-label-md text-on-surface">Node-0x91bc reached threshold</p>
+<p class="text-[12px] text-on-surface-variant mt-1">Autoscaling initiated via Zone-3 Proxy</p>
+</div>
+</div>
+<!-- Timeline Item 4 -->
+<div class="relative pl-10">
+<div class="absolute left-0 mt-1 h-5 w-5 rounded-full bg-[#1A1A1A] border-2 border-primary flex items-center justify-center">
+<div class="h-1.5 w-1.5 rounded-full bg-primary"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant mb-1">07:55:00 UTC</span>
+<p class="font-label-md text-label-md text-on-surface">Scheduled scan complete</p>
+<p class="text-[12px] text-on-surface-variant mt-1">0 vulnerabilities found across fleet</p>
+</div>
+</div>
+</div>
+</div>
+<button class="p-4 text-[12px] text-primary font-bold border-t border-[#262626] hover:bg-[#121212] transition-colors">
+                        VIEW ALL SECURITY LOGS
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Side Navigation (Mobile Hidden) Overlay Logic handled via top-nav instructions -->
+<div class="fixed bottom-6 right-6 md:hidden">
+<button class="bg-primary-container text-on-primary-container w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[24px]">add</span>
+</button>
+</div>
+<script>
+        // Micro-interactions for table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease-out';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Simple real-time clock update (for the command center feel)
+        setInterval(() => {
+            const timeStr = new Date().toUTCString().split(' ')[4];
+            const clockEl = document.querySelector('.utc-clock');
+            if(clockEl) clockEl.innerText = timeStr + ' UTC';
+        }, 1000);
+    </script>
+</body></html>

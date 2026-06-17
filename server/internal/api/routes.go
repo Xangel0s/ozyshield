@@ -14,7 +14,31 @@ func RegisterRoutes(mux *http.ServeMux, api *ServerAPI) {
 	// 2. Client Dashboard-facing endpoints
 	mux.HandleFunc("GET /v1/nodes", corsMiddleware(api.ListNodes))
 	mux.HandleFunc("GET /v1/incidents", corsMiddleware(api.ListIncidents))
+	mux.HandleFunc("PUT /v1/incidents/{id}", corsMiddleware(api.UpdateIncidentStatus))
+	mux.HandleFunc("PUT /v1/incidents/{id}/team", corsMiddleware(api.AssignIncidentToTeam))
 	mux.HandleFunc("POST /v1/simulate-crash", corsMiddleware(api.SimulateCrash))
+
+	// 3. Teams endpoints
+	mux.HandleFunc("GET /v1/teams", corsMiddleware(api.ListTeams))
+	mux.HandleFunc("POST /v1/teams", corsMiddleware(api.CreateTeam))
+	mux.HandleFunc("PUT /v1/teams/{id}", corsMiddleware(api.UpdateTeam))
+	mux.HandleFunc("DELETE /v1/teams/{id}", corsMiddleware(api.DeleteTeam))
+
+	// 5. Users endpoints
+	mux.HandleFunc("POST /v1/auth/login", corsMiddleware(api.Login))
+	mux.HandleFunc("POST /v1/auth/validate", corsMiddleware(api.ValidateToken))
+	mux.HandleFunc("GET /v1/config", corsMiddleware(api.GetConfig))
+	mux.HandleFunc("GET /v1/users", corsMiddleware(api.ListUsers))
+	mux.HandleFunc("GET /v1/users/me", corsMiddleware(api.GetCurrentUser))
+	mux.HandleFunc("POST /v1/users/switch", corsMiddleware(api.SwitchUser))
+	mux.HandleFunc("POST /v1/users", corsMiddleware(api.CreateUser))
+	mux.HandleFunc("PUT /v1/users/{id}", corsMiddleware(api.UpdateUser))
+	mux.HandleFunc("DELETE /v1/users/{id}", corsMiddleware(api.DeleteUser))
+
+	// 5. Invitations endpoints
+	mux.HandleFunc("GET /v1/invitations", corsMiddleware(api.ListInvitations))
+	mux.HandleFunc("POST /v1/invitations", corsMiddleware(api.CreateInvitation))
+	mux.HandleFunc("PUT /v1/invitations/{id}", corsMiddleware(api.RespondInvitation))
 }
 
 // corsMiddleware injects standard CORS headers to permit local and production frontend origins to fetch data.

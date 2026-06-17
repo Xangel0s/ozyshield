@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/ozyshield/ozyshield-server/internal/api"
+	"github.com/ozyshield/ozyshield-server/internal/config"
 	"github.com/ozyshield/ozyshield-server/internal/db"
 	"github.com/ozyshield/ozyshield-server/internal/engine"
 )
@@ -15,68 +15,78 @@ import (
 func main() {
 	log.Println("🛡️  Starting OzyShield Central Server...")
 
-	// 1. Configure Port
-	portFlag := flag.String("port", "8080", "Port to listen on")
-	flag.Parse()
+	cfg := config.Load()
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = *portFlag
+	if errs := cfg.Validate(); len(errs) > 0 {
+		for _, e := range errs {
+			log.Printf("  ❌ %s", e)
+		}
+		log.Fatal("Fix the above configuration errors and restart.")
 	}
 
-	// 2. Initialize Memory Store and Diagnostics Cache
+	portFlag := flag.String("port", cfg.Port, "Port to listen on")
+	flag.Parse()
+
+	port := cfg.Port
+	if *portFlag != "8080" {
+		port = *portFlag
+	}
+	if p := os.Getenv("PORT"); p != "" {
+		port = p
+	}
+
 	store := db.NewMemoryStore()
 	cache := engine.NewDiagnosticsCache()
 
-	// 3. Preseed Common Error Diagnoses inside Cache
 	preseedDiagnostics(cache)
 
-	// 4. Seed initial mock data for Nodes and Incidents to bootstrap Dashboard UI
-	seedMockData(store)
+	if cfg.SeedData {
+		log.Println("[Server] Seeding demo data (OZY_SEED_DATA=true)")
+		seedMockData(store)
+	}
 
-	// 5. Initialize API and register routes
-	serverAPI := api.NewServerAPI(store, cache)
+	serverAPI := api.NewServerAPI(store, cache, cfg)
 	mux := http.NewServeMux()
 	api.RegisterRoutes(mux, serverAPI)
 
-	// 6. Listen and Serve
 	serverAddr := ":" + port
 	log.Printf("🚀 OzyShield Server listening on http://localhost%s", serverAddr)
+	log.Printf("   Admin: %s", cfg.AdminEmail)
+	log.Printf("   Token: %s", cfg.AuthToken)
+	log.Printf("   Registration: %v", cfg.EnableRegister)
+	log.Printf("   Seed data: %v", cfg.SeedData)
 	if err := http.ListenAndServe(serverAddr, mux); err != nil {
 		log.Fatalf("Fatal: Failed to start web server: %v", err)
 	}
 }
 
 func preseedDiagnostics(cache *engine.DiagnosticsCache) {
-	// Preseed PostgreSQL Lock Timeout
 	cache.PreSeed(
 		"[CRITICAL] postgresql database query failed: lock timeout after 10000ms. transaction blocked.",
 		engine.CachedDiagnosis{
-			Cause: "Un proceso o query de base de datos ha bloqueado recursos por encima del límite de tiempo configurado, generando un interbloqueo (deadlock).",
+			Cause: "Database query has blocked resources beyond the configured time limit, generating a deadlock.",
 			Steps: []string{
-				"Identificar las transacciones bloqueadoras consultando pg_stat_activity y pg_locks.",
-				"Terminar la consulta causante del bloqueo con: SELECT pg_cancel_backend(PID) o SELECT pg_terminate_backend(PID).",
-				"Optimizar los índices de las consultas involucradas para reducir la retención de bloqueos.",
+				"Identify blocking transactions via pg_stat_activity and pg_locks.",
+				"Terminate the blocking query with: SELECT pg_cancel_backend(PID) or SELECT pg_terminate_backend(PID).",
+				"Optimize indexes on involved queries to reduce lock retention.",
 			},
 		},
 	)
 
-	// Preseed Nginx Upstream Timeout
 	cache.PreSeed(
 		"[ERROR] nginx worker failed to connect to upstream unix:/var/run/php/php8.2-fpm.sock: Connection refused",
 		engine.CachedDiagnosis{
-			Cause: "Nginx no pudo comunicarse con el servidor de aplicación upstream (Node.js, PHP-FPM, Python, etc.) porque este se encuentra apagado o no escucha en el socket.",
+			Cause: "Nginx cannot communicate with the upstream application server because it is down or not listening on the socket.",
 			Steps: []string{
-				"Revisar el estado del servicio de backend upstream (ej. systemctl status php8.2-fpm).",
-				"Verificar la ruta del socket unix o la dirección IP/puerto configurada en la sección 'upstream' de Nginx.",
-				"Inspeccionar los logs de error del backend upstream para determinar por qué no responde.",
+				"Check the upstream backend service status (e.g. systemctl status php8.2-fpm).",
+				"Verify the unix socket path or IP/port configured in the nginx upstream section.",
+				"Inspect backend upstream error logs to determine why it is not responding.",
 			},
 		},
 	)
 }
 
 func seedMockData(store db.Store) {
-	// Seed dummy Nodes
 	node1 := db.Node{
 		NodeID:   "vm-primary-postgres",
 		Name:     "db-primary-postgres",
@@ -88,9 +98,7 @@ func seedMockData(store db.Store) {
 			"docker":     "active",
 			"redis":      "inactive",
 		},
-		LastSeen: time.Now().Add(-5 * time.Minute),
 	}
-
 	node2 := db.Node{
 		NodeID:   "vm-frontend-nginx",
 		Name:     "web-frontend-nginx",
@@ -102,23 +110,19 @@ func seedMockData(store db.Store) {
 			"docker":  "active",
 			"apache2": "not_found",
 		},
-		LastSeen: time.Now().Add(-2 * time.Minute),
 	}
-
 	store.RegisterNode(node1)
 	store.RegisterNode(node2)
 
-	// Seed one initial dummy Incident
 	diag := engine.AnalyzeLog("[CRITICAL] postgresql database query failed: lock timeout after 10000ms. transaction blocked.", "postgresql")
 	inc := db.Incident{
-		ID:          "inc_initial_001",
+		ID:          "inc_seed_001",
 		NodeID:      "vm-primary-postgres",
 		LogLine:     "[CRITICAL] postgresql database query failed: lock timeout after 10000ms. transaction blocked.",
 		Service:     "postgresql",
 		Diagnosis:   diag.Cause,
 		Remediation: diag.Steps,
 		Status:      "critical",
-		Timestamp:   time.Now().Add(-10 * time.Minute),
 	}
 	store.AddIncident(inc)
 }
